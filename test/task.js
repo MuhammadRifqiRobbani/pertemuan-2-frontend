@@ -1,91 +1,103 @@
-/**
- * TODO 1.
- * Buat array of object users (5 users).
- * Object memiliki property: name, age, major.
- * Note: Ubah var menggunakan JavaScript Modern.
- */
-var users;
+const { users, all, store, update, destroy } = require("../task");
 
-/**
- * TODO 2
- * Buat function all: Menampilkan semua data user.
- * Hint: Gunakan for/for-of.
- * Note: Ubah function menggunakan arrow function.
- */
-function all() {}
+describe("kak ini ngejalani array pengguna objek", () => {
+  test("pengguna ini  harus berupa susunan objek", () => {
+    expect(users).toEqual(
+      expect.arrayContaining([expect.objectContaining({})])
+    );
+  });
 
-/**
- * TODO 3
- * Buat function store: Menambahkan user baru.
- * Hint: Gunakan method push.
- * Note: Ubah function menggunakan arrow function.
- */
-function store(user) {}
+  test("pengguna seharusnya memiliki 5 data", () => {
+    expect(users.length).toBeGreaterThanOrEqual(5);
+  });
 
-/**
- * TODO 4.
- * Buat function update: Mengedit data user.
- * Hint: re-assign array.
- * Note: Ubah function menggunakan arrow function.
- */
-function update(index, user) {}
+  users &&
+    users.forEach((user) => {
+      const { name } = user;
+      test(`${name ?? "item"} kak ini harus berupa objek`, () => {
+        expect(typeof user).toBe("object");
+      });
+    });
 
-/**
- * TODO 5.
- * Buat function destroy: Menghapus data user.
- * Hint: Gunakan method splice.
- * Note: Ubah function menggunakan arrow function.
- */
-function destroy(index) {}
+  users &&
+    users.forEach((user) => {
+      const { name } = user;
+      test(`${
+        name ?? "name"
+      } ini harus memiliki properti nama, umur, dan jurusan`, () => {
+        expect(user).toHaveProperty("nama");
+        expect(user).toHaveProperty("umur");
+        expect(user).toHaveProperty("jurusan");
+      });
+    });
+});
 
-/**
- * Function main.
- * Jangan edit atau hapus function main.
- * Function ini untuk testing task.
- */
+describe("kak ini  ngejalani semua fungsi berjalan", () => {
+  test("semua fungsi harus bisa dipanggil", () => {
+    expect(all()).toBeUndefined();
+  });
+});
 
-const main = () => {
-    /**
-     * Test function index
-     */
-    console.log("# Get All Users");
-    all();
+describe("kak ini ngejalani toko fungsi", () => {
+  const user = {
+    nama: "Sabiq",
+    umur: 20,
+    jurusan: "Informatics",
+  };
 
-    /**
-     * Test function store
-     */
-    console.log("# Add New User: Sabiq");
-    const newUser = {
-        name: "Sabiq",
-        age: 20,
-        major: "Informatics",
+  test("fungsi ini di buat harus bisa dipanggil", () => {
+    expect(store(user)).toBeUndefined();
+  });
+
+  test("fungsi ini di buat harus bisa menambahkan pengguna baru kak", () => {
+    const lengthOfOldUsers = users.length;
+    store(user);
+    const lengthOfNewUsers = users.length;
+
+    expect(lengthOfNewUsers).toBeGreaterThan(lengthOfOldUsers);
+  });
+});
+
+describe("kak ini ngejalani fungsi edit", () => {
+  test("fungsi edit ini harus bisa dipanggil", () => {
+    const index = 1;
+    const user = {
+      name: "Isfa",
+      age: 23,
+      major: "English",
     };
-    store(newUser);
 
-    /**
-     * Test function update
-     */
-    console.log("# Edit User: Isfa");
-    const editedIndex = 1;
-    const editedUser = {
-        name: "Isfhani Ghiyath",
-        age: 23,
-        major: "English",
+    expect(update(index, user)).toBeUndefined();
+  });
+
+  test("fungsi edit ini harus bisa mengedit pengguna", () => {
+    const index = 1;
+    const user = {
+      name: "Muh Isfani Ghiyath",
+      age: 20,
+      major: "Software Engineer",
     };
-    update(editedIndex, editedUser);
 
-    /**
-     * Test function destroy
-     */
-    console.log("# Delete User: Nurul");
-    const deletedIndex = 2;
-    destroy(deletedIndex);
-};
+    const oldUser = users[index];
+    update(index, user);
+    const newUser = users[index];
 
-main();
+    expect(newUser).not.toEqual(oldUser);
+  });
+});
 
-/**
- * Jangan hapus exports.
- * Exports ini untuk tujuan testing.
- */
-module.exports = { users, all, store, update, destroy };
+describe("kak ini ngejalani sebuah fungsi menghancurkan", () => {
+  const index = 2;
+
+  test("fungsi menghancurkan ini harus bisa dipanggil kak", () => {
+    expect(destroy(index)).toBeUndefined();
+  });
+
+  test("function destroy harus bisa menghapus user", () => {
+    const lengthOfOldUsers = users.length;
+    destroy(index);
+    const lengthOfNewUsers = users.length;
+
+    expect(lengthOfNewUsers).toBeLessThan(lengthOfOldUsers);
+  });
+});
